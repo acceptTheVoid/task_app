@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testing/controllers/notifier_controller.dart';
+import '/controllers/notifier_controller.dart';
 
 import 'branch.dart';
 

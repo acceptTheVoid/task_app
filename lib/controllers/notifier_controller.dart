@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testing/controllers/app_bar_notifier.dart';
-import 'package:testing/controllers/task_notifier.dart';
-import 'package:testing/controllers/title_notifier.dart';
+import '/controllers/app_bar_notifier.dart';
+import '/controllers/task_notifier.dart';
+import '/controllers/title_notifier.dart';
 
 class NotifierController extends StatefulWidget {
   final Widget child;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:testing/controllers/notifier_controller.dart';
-import 'package:testing/models/task.dart';
+import '/controllers/notifier_controller.dart';
+import '/models/task.dart';
 
 class Branch extends StatefulWidget {
   const Branch({super.key});
