@@ -28,7 +28,7 @@ class _BranchState extends State<Branch> {
               child: TextFormField(
                 controller: textController,
                 decoration: const InputDecoration(hintText: 'Введите название задачи'),
-                maxLength: 40,
+                // maxLength: 40,
                 validator: _validator,
               ),
             ),
@@ -137,11 +137,11 @@ class _BranchState extends State<Branch> {
 
   String? _validator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Текст введи...';
+      return 'Название не может быть пустым';
     }
 
     if (value.length > 40) {
-      return 'Текст убери...';
+      return 'Слишком длинное название';
     }
 
     return null;
