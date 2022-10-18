@@ -113,13 +113,17 @@ class _BranchState extends State<Branch> {
         return Dismissible(
           key: ObjectKey(task),
           direction: DismissDirection.endToStart,
-          background: Container(
-            padding: const EdgeInsets.only(right: 10),
-            alignment: Alignment.centerRight,
-            color: Colors.red,
-            child: const Icon(
-              Icons.delete,
-              color: Colors.white,
+          background: ClipRRect(
+            borderRadius: BorderRadius.circular(25),
+            child: const Card(
+              child: ListTile(
+                contentPadding: EdgeInsets.only(top: 5, right: 5),
+                trailing: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+                tileColor: Colors.red,
+              ),
             ),
           ),
           onDismissed: (direction) => setState(() {
