@@ -32,14 +32,6 @@ class NotifierControllerData extends State<NotifierController> {
   }
 
   @override
-  void dispose() {
-    titleNotifier.dispose();
-    appBarNotifier.dispose();
-    titleNotifier.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return _InheritedNotifierController(data: this, child: widget.child);
   }

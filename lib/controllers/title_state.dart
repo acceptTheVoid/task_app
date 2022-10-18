@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class TitleNotifier extends ChangeNotifier {
+class TitleNotifier {
   String _title = 'Дизмораль';
 
   TitleNotifier();
@@ -9,6 +7,5 @@ class TitleNotifier extends ChangeNotifier {
 
   void setTitle(String newTitle) {
     _title = newTitle;
-    notifyListeners();
   }
 }

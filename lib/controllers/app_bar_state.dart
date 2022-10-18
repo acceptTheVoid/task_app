@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class AppBarNotifier extends ChangeNotifier {
+class AppBarNotifier {
   bool _isUnchecked = false;
   bool _isOnlyFav = false;
 
@@ -9,11 +7,9 @@ class AppBarNotifier extends ChangeNotifier {
 
   void setUnchecked() {
     _isUnchecked = !_isUnchecked;
-    notifyListeners();
   }
 
   void setOnlyFav() {
     _isOnlyFav = !_isOnlyFav;
-    notifyListeners();
   }
 }
