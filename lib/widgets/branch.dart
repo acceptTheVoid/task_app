@@ -112,6 +112,7 @@ class _BranchState extends State<Branch> {
 
         return Dismissible(
           key: ObjectKey(task),
+          direction: DismissDirection.endToStart,
           background: Container(
             padding: const EdgeInsets.only(right: 10),
             alignment: Alignment.centerRight,
