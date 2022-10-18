@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '/controllers/notifier_controller.dart';
 import '/models/task.dart';
 
@@ -62,7 +63,7 @@ class _BranchState extends State<Branch> {
     );
   }
 
-  ListView _createList() {
+  Widget _createList() {
     var themeColor = Theme.of(context).primaryColor;
     var nc = NotifierController.of(context);
     var taskNotifier = nc.taskNotifier;
@@ -76,6 +77,26 @@ class _BranchState extends State<Branch> {
         viewedList.add(list[i]);
         origIdx.add(i);
       }
+    }
+
+    if (viewedList.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                SvgPicture.asset('assets/todolist_background.svg'),
+                SvgPicture.asset('assets/todolist.svg'),
+              ],
+            ),
+            const Text(
+              'На данный момент задачи отсутствуют',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      );
     }
 
     return ListView.builder(
