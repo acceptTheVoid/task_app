@@ -1,39 +1,69 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
+import 'package:task_app/controllers/app_bar_state.dart';
 
 import '../models/task.dart';
 
 class TaskState extends ChangeNotifier {
-  final List<Task> _tasks = [
-    Task(title: 'Илья Обухов'),
-    Task(title: 'Флаттер для...'),
-    Task(title: 'Таска'),
-  ];
+  int _taskCounter = 0;
 
-  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
+  final AppBarState appBarState;
+
+  final List<Task> _tasks = [];
+  List<Task> _viewedTasks = [];
+
+  TaskState({required this.appBarState}) {
+    addTask('Илья Обухов');
+    addTask('Флаттер для...');
+    addTask('Таска');
+    appBarState.addListener(_filterTasks);
+  }
+
+  @override
+  void dispose() {
+    appBarState.removeListener(_filterTasks);
+    super.dispose();
+  }
+
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_viewedTasks);
+
+  void _filterTasks() {
+    final List<Task> viewedList = [];
+    for (int i = 0; i != _tasks.length; ++i) {
+      if (!(appBarState.showOnlyChecked && _tasks[i].isChecked ||
+          appBarState.showOnlyFavorite && !_tasks[i].isFavorite)) {
+        viewedList.add(_tasks[i]);
+      }
+    }
+
+    _viewedTasks = viewedList;
+    notifyListeners();
+  }
 
   void addTask(String title) {
-    _tasks.add(Task(title: title));
-    notifyListeners();
+    _tasks.add(Task(id: _taskCounter++, title: title));
+    _filterTasks();
   }
 
   void changeCheckAt(int idx) {
-    _tasks[idx].isChecked = !_tasks[idx].isChecked;
-    notifyListeners();
+    final task = _tasks.lastWhere((task) => task.id == idx);
+    task.isChecked = !task.isChecked;
+    _filterTasks();
   }
 
   void changeFavAt(int idx) {
-    _tasks[idx].isFav = !_tasks[idx].isFav;
-    notifyListeners();
+    final task = _tasks.lastWhere((task) => task.id == idx);
+    task.isFavorite = !task.isFavorite;
+    _filterTasks();
   }
 
   void removeTaskAt(int idx) {
-    _tasks.removeAt(idx);
-    notifyListeners();
+    _tasks.removeWhere((task) => task.id == idx);
+    _filterTasks();
   }
 
   void removeAllChecked() {
     _tasks.removeWhere((task) => task.isChecked);
-    notifyListeners();
+    _filterTasks();
   }
 }

@@ -10,16 +10,13 @@ class TaskApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Colors.green;
 
-    var branch = Branch();
-    var homeData = StateProvider(child: branch);
-
     return MaterialApp(
       theme: ThemeData(
         primaryColor: theme[400],
         appBarTheme: AppBarTheme(color: theme[400]),
         floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: theme[400]),
       ),
-      home: homeData,
+      home: StateProvider(child: Branch()),
     );
   }
 }

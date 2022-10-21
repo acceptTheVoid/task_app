@@ -132,7 +132,7 @@ class _BranchAppBarState extends State<BranchAppBar> {
         final textController = TextEditingController();
         textController.text = titleState.title;
 
-        return AlertDialog(
+        final dialogue = AlertDialog(
           title: const Text("Редактировать ветку"),
           content: Form(
             key: _formKey,
@@ -161,6 +161,9 @@ class _BranchAppBarState extends State<BranchAppBar> {
             )
           ],
         );
+
+        textController.dispose();
+        return dialogue;
       },
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../controllers/state_provider.dart';
-import '../../models/task.dart';
 
 class BranchBody extends StatelessWidget {
   const BranchBody({super.key});
@@ -17,7 +16,7 @@ class BranchBody extends StatelessWidget {
       animation: Listenable.merge([taskState, appBarState]),
       builder: (context, child) {
         if (taskState.tasks.isEmpty) {
-          return _createEmptyBody(context);
+          return _createEmptyBody();
         }
 
         return _createList(context);
@@ -25,7 +24,7 @@ class BranchBody extends StatelessWidget {
     );
   }
 
-  Widget _createEmptyBody(BuildContext context) {
+  Widget _createEmptyBody() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -46,55 +45,45 @@ class BranchBody extends StatelessWidget {
   }
 
   Widget _createList(BuildContext context) {
-    final stateProvider = StateProvider.of(context);
-    final taskState = stateProvider.taskState;
-    final appBarState = stateProvider.appBarState;
+    final taskState = StateProvider.of(context).taskState;
+    final viewedList = taskState.tasks;
+
     final themeColor = Theme.of(context).primaryColor;
 
     return AnimatedBuilder(
       animation: taskState,
       builder: (context, child) {
-        final list = taskState.tasks;
-
-        final List<Task> viewedList = [];
-        final List<int> origIdx = [];
-        for (int i = 0; i != list.length; ++i) {
-          if (!(appBarState.showOnlyChecked && list[i].isChecked || appBarState.showOnlyFavorite && !list[i].isFav)) {
-            viewedList.add(list[i]);
-            origIdx.add(i);
-          }
-        }
-
         return ListView.builder(
           itemCount: viewedList.length,
-          itemBuilder: (ctx, idx) {
-            var task = viewedList[idx];
+          itemBuilder: (context, index) {
+            var task = viewedList[index];
 
             var listItem = ClipRRect(
               borderRadius: BorderRadius.circular(25),
               child: Card(
                 child: ListTile(
-                  contentPadding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 5),
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Checkbox(
-                      onChanged: (_) => taskState.changeCheckAt(origIdx[idx]),
+                      onChanged: (_) => taskState.changeCheckAt(task.id),
                       activeColor: themeColor,
                       value: task.isChecked,
                     ),
                   ),
                   title: Text(task.title),
                   trailing: IconButton(
-                    onPressed: () => taskState.changeFavAt(origIdx[idx]),
-                    icon: Transform.scale(scale: 1.5, child: Icon(task.isFav ? Icons.star_sharp : Icons.star_outline)),
-                    color: (task.isFav ? Colors.amber : Colors.black54),
+                    onPressed: () => taskState.changeFavAt(task.id),
+                    icon: Transform.scale(
+                        scale: 1.5, child: Icon(task.isFavorite ? Icons.star_sharp : Icons.star_outline)),
+                    color: (task.isFavorite ? Colors.amber : Colors.black54),
                   ),
                 ),
               ),
             );
 
             return Dismissible(
-              key: ObjectKey(task),
+              key: ValueKey<int>(task.id),
               direction: DismissDirection.endToStart,
               background: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
@@ -109,7 +98,7 @@ class BranchBody extends StatelessWidget {
                   ),
                 ),
               ),
-              onDismissed: (direction) => taskState.removeTaskAt(origIdx[idx]),
+              onDismissed: (direction) => taskState.removeTaskAt(task.id),
               child: listItem,
             );
           },

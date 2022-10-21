@@ -29,7 +29,7 @@ class Branch extends StatelessWidget {
       context: context,
       builder: (context) {
         final textController = TextEditingController();
-        var dialogue = AlertDialog(
+        final dialogue = AlertDialog(
           title: const Text('Создать задачу'),
           content: Form(
             key: _formKey,
