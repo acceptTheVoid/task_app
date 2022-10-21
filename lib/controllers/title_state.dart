@@ -1,7 +1,7 @@
-class TitleNotifier {
+class TitleState {
   String _title = 'Дизмораль';
 
-  TitleNotifier();
+  TitleState();
 
   String get title => _title;
 
