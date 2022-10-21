@@ -66,6 +66,7 @@ class BranchBody extends StatelessWidget {
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Checkbox(
+                      shape: const CircleBorder(),
                       onChanged: (_) => taskState.changeCheckAt(task.id),
                       activeColor: themeColor,
                       value: task.isChecked,
