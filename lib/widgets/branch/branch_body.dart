@@ -90,7 +90,7 @@ class BranchBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
                 child: const Card(
                   child: ListTile(
-                    contentPadding: EdgeInsets.only(top: 5, right: 5),
+                    contentPadding: EdgeInsets.only(top: 5),
                     trailing: Icon(
                       Icons.delete,
                       color: Colors.white,
