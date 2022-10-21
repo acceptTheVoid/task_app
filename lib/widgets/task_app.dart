@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '/controllers/notifier_controller.dart';
+import '/controllers/state_provider.dart';
 
-import 'branch.dart';
+import 'branch/branch.dart';
 
 class TaskApp extends StatelessWidget {
   const TaskApp({super.key});
@@ -10,8 +10,8 @@ class TaskApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Colors.green;
 
-    var branch = const Branch();
-    var homeData = NotifierController(child: branch);
+    var branch = Branch();
+    var homeData = StateProvider(child: branch);
 
     return MaterialApp(
       theme: ThemeData(

@@ -25,10 +25,18 @@ class StateProviderData extends State<StateProvider> {
 
   @override
   void initState() {
-    taskState = TaskState();
     appBarState = AppBarState();
+    taskState = TaskState();
     titleState = TitleState();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    appBarState.dispose();
+    taskState.dispose();
+
+    super.dispose();
   }
 
   @override
