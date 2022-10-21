@@ -20,6 +20,7 @@ class _BranchAppBarState extends State<BranchAppBar> {
   late final Color themeColor;
 
   final _formKey = GlobalKey<FormState>();
+  final _textController = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -32,6 +33,12 @@ class _BranchAppBarState extends State<BranchAppBar> {
     themeColor = Theme.of(context).primaryColor;
 
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -129,15 +136,14 @@ class _BranchAppBarState extends State<BranchAppBar> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        final textController = TextEditingController();
-        textController.text = titleState.title;
+        _textController.text = titleState.title;
 
         final dialogue = AlertDialog(
           title: const Text("Редактировать ветку"),
           content: Form(
             key: _formKey,
             child: TextFormField(
-              controller: textController,
+              controller: _textController,
               decoration: const InputDecoration(
                 hintText: "Введите название ветки",
               ),
@@ -152,7 +158,7 @@ class _BranchAppBarState extends State<BranchAppBar> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   setState(() {
-                    titleState.setTitle(textController.text);
+                    titleState.setTitle(_textController.text);
                     Navigator.of(context).pop();
                   });
                 }
@@ -162,7 +168,6 @@ class _BranchAppBarState extends State<BranchAppBar> {
           ],
         );
 
-        textController.dispose();
         return dialogue;
       },
     );
