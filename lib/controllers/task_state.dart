@@ -1,8 +1,8 @@
 import 'dart:collection';
 import '../models/task.dart';
 
-class TaskNotifier {
-  List<Task> _tasks = [
+class TaskState {
+  final List<Task> _tasks = [
     Task(title: 'Илья Обухов'),
     Task(title: 'Флаттер для...'),
     Task(title: 'Таска'),
@@ -27,6 +27,6 @@ class TaskNotifier {
   }
 
   void removeAllChecked() {
-    _tasks = _tasks.where((task) => !task.isChecked).toList();
+    _tasks.removeWhere((task) => task.isChecked);
   }
 }
