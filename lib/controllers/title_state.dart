@@ -1,5 +1,5 @@
 class TitleState {
-  String _title = 'Дизмораль';
+  String _title = 'МЕГА МОРАЛЬ';
 
   TitleState();
 
