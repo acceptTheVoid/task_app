@@ -1,47 +1,51 @@
 import 'package:flutter/material.dart';
-import '/controllers/app_bar_notifier.dart';
-import '/controllers/task_notifier.dart';
-import '/controllers/title_notifier.dart';
+import '/controllers/app_bar_state.dart';
+import '/controllers/task_state.dart';
+import '/controllers/title_state.dart';
 
-class NotifierController extends StatefulWidget {
+class StateProvider extends StatefulWidget {
   final Widget child;
 
-  const NotifierController({super.key, required this.child});
+  const StateProvider({super.key, required this.child});
 
-  static NotifierControllerData of(BuildContext context) {
-    var data = context.dependOnInheritedWidgetOfExactType<_InheritedNotifierController>();
+  static StateProviderData of(BuildContext context) {
+    var data = context.dependOnInheritedWidgetOfExactType<_InheritedStateProvider>();
     assert(data != null, 'Леее куда преш не видиш NotifierController в дереве виджетов нет');
     return data!.data;
   }
 
   @override
-  State<NotifierController> createState() => NotifierControllerData();
+  State<StateProvider> createState() => StateProviderData();
 }
 
-class NotifierControllerData extends State<NotifierController> {
-  late TaskNotifier taskNotifier;
-  late AppBarNotifier appBarNotifier;
-  late TitleNotifier titleNotifier;
+class StateProviderData extends State<StateProvider> {
+  late final TaskState taskState;
+  late final AppBarState appBarState;
+  late final TitleState titleState;
 
   @override
   void initState() {
-    taskNotifier = TaskNotifier();
-    appBarNotifier = AppBarNotifier();
-    titleNotifier = TitleNotifier();
+    taskState = TaskState();
+    appBarState = AppBarState();
+    titleState = TitleState();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _InheritedNotifierController(data: this, child: widget.child);
+    return _InheritedStateProvider(data: this, child: widget.child);
   }
 }
 
-class _InheritedNotifierController extends InheritedWidget {
-  const _InheritedNotifierController({required this.data, required super.child});
+class _InheritedStateProvider extends InheritedWidget {
+  const _InheritedStateProvider({required this.data, required super.child});
 
-  final NotifierControllerData data;
+  final StateProviderData data;
 
   @override
-  bool updateShouldNotify(_InheritedNotifierController oldWidget) => true;
+  bool updateShouldNotify(_InheritedStateProvider oldWidget) {
+    return data.titleState != oldWidget.data.titleState ||
+        data.appBarState != oldWidget.data.appBarState ||
+        data.taskState != oldWidget.data.taskState;
+  }
 }

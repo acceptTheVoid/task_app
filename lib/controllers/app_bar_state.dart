@@ -1,15 +1,15 @@
-class AppBarNotifier {
-  bool _isUnchecked = false;
-  bool _isOnlyFav = false;
+class AppBarState {
+  bool _showOnlyChecked = false;
+  bool _showOnlyFavorite = false;
 
-  bool get isUnchecked => _isUnchecked;
-  bool get isOnlyFav => _isOnlyFav;
+  bool get showOnlyChecked => _showOnlyChecked;
+  bool get showOnlyFavorite => _showOnlyFavorite;
 
-  void setUnchecked() {
-    _isUnchecked = !_isUnchecked;
+  void toggleOnlyChecked() {
+    _showOnlyChecked = !_showOnlyChecked;
   }
 
-  void setOnlyFav() {
-    _isOnlyFav = !_isOnlyFav;
+  void toggleOnlyFavorite() {
+    _showOnlyFavorite = !_showOnlyFavorite;
   }
 }
