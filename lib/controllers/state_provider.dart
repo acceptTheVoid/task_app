@@ -9,9 +9,9 @@ class StateProvider extends StatefulWidget {
   const StateProvider({super.key, required this.child});
 
   static StateProviderData of(BuildContext context) {
-    var data = context.dependOnInheritedWidgetOfExactType<_InheritedStateProvider>();
-    assert(data != null, 'Леее куда преш не видиш NotifierController в дереве виджетов нет');
-    return data!.data;
+    final provider = context.dependOnInheritedWidgetOfExactType<_InheritedStateProvider>();
+    assert(provider != null, 'Леее куда преш не видиш NotifierController в дереве виджетов нет');
+    return provider!.data;
   }
 
   @override
