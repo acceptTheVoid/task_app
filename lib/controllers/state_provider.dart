@@ -8,27 +8,28 @@ class StateProvider extends StatefulWidget {
 
   const StateProvider({super.key, required this.child});
 
-  static StateProviderData of(BuildContext context) {
+  static StateDataProvider of(BuildContext context) {
     final provider = context.dependOnInheritedWidgetOfExactType<_InheritedStateProvider>();
     assert(provider != null, 'Леее куда преш не видиш NotifierController в дереве виджетов нет');
     return provider!.data;
   }
 
   @override
-  State<StateProvider> createState() => StateProviderData();
+  State<StateProvider> createState() => StateDataProvider();
 }
 
-class StateProviderData extends State<StateProvider> {
+class StateDataProvider extends State<StateProvider> {
   late final TaskState taskState;
   late final AppBarState appBarState;
   late final TitleState titleState;
 
   @override
   void initState() {
+    super.initState();
+
     appBarState = AppBarState();
     taskState = TaskState(appBarState: appBarState);
     titleState = TitleState();
-    super.initState();
   }
 
   @override
@@ -48,7 +49,7 @@ class StateProviderData extends State<StateProvider> {
 class _InheritedStateProvider extends InheritedWidget {
   const _InheritedStateProvider({required this.data, required super.child});
 
-  final StateProviderData data;
+  final StateDataProvider data;
 
   @override
   bool updateShouldNotify(_InheritedStateProvider oldWidget) {
