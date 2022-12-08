@@ -74,11 +74,11 @@ class _BranchScreenState extends State<BranchScreen> {
 
   String? _validator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Текст введи...';
+      return 'Название не может быть пустым';
     }
 
     if (value.length > 40) {
-      return 'Текст убери...';
+      return 'Слишком длинное название';
     }
 
     return null;
