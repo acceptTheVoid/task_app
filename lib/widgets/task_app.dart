@@ -16,7 +16,7 @@ class TaskApp extends StatelessWidget {
         appBarTheme: AppBarTheme(color: theme[400]),
         floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: theme[400]),
       ),
-      home: StateProvider(child: Branch()),
+      home: StateProvider(child: BranchScreen()),
     );
   }
 }
