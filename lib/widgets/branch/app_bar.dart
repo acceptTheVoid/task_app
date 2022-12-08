@@ -45,7 +45,7 @@ class _BranchAppBarState extends State<BranchAppBar> {
   Widget build(BuildContext context) {
     Icon checkIcon, favouriteIcon;
     String checkTitle, favouriteTitle;
-    if (appBarState.showOnlyChecked) {
+    if (appBarState.showOnlyCompleted) {
       checkIcon = Icon(Icons.check_circle_outline, color: themeColor);
       checkTitle = 'Показать выполненные';
     } else {

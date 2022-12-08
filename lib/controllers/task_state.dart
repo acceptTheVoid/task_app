@@ -30,7 +30,7 @@ class TaskState extends ChangeNotifier {
   void _filterTasks() {
     final List<Task> viewedList = [];
     for (int i = 0; i != _tasks.length; ++i) {
-      if (!(appBarState.showOnlyChecked && _tasks[i].isChecked ||
+      if (!(appBarState.showOnlyCompleted && _tasks[i].isChecked ||
           appBarState.showOnlyFavorite && !_tasks[i].isFavorite)) {
         viewedList.add(_tasks[i]);
       }

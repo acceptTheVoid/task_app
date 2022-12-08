@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 
 class AppBarState extends ChangeNotifier {
-  bool _showOnlyChecked = false;
+  bool _showOnlyCompleted = false;
   bool _showOnlyFavorite = false;
 
-  bool get showOnlyChecked => _showOnlyChecked;
+  bool get showOnlyCompleted => _showOnlyCompleted;
   bool get showOnlyFavorite => _showOnlyFavorite;
 
   void toggleOnlyChecked() {
-    _showOnlyChecked = !_showOnlyChecked;
+    _showOnlyCompleted = !_showOnlyCompleted;
     notifyListeners();
   }
 
