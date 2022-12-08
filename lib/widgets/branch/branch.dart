@@ -84,7 +84,7 @@ class _BranchScreenState extends State<BranchScreen> {
     return null;
   }
 
-  TextButton _createCancelButton(context) {
+  Widget _createCancelButton(context) {
     return TextButton(
       onPressed: () {
         Navigator.of(context).pop();
