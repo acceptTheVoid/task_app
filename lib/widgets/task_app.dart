@@ -8,7 +8,7 @@ class TaskApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Colors.green;
+    const theme = Colors.green;
 
     return MaterialApp(
       theme: ThemeData(
