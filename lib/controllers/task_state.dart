@@ -1,13 +1,13 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
-import 'package:task_app/controllers/app_bar_state.dart';
+import 'package:task_app/controllers/task_filters_state.dart';
 
 import '../models/task.dart';
 
 class TaskState extends ChangeNotifier {
   int _taskCounter = 0;
 
-  final AppBarState appBarState;
+  final TaskFiltersState appBarState;
 
   final List<Task> _tasks = [];
   List<Task> _viewedTasks = [];

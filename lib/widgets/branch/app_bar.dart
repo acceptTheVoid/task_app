@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:task_app/controllers/app_bar_state.dart';
+import 'package:task_app/controllers/task_filters_state.dart';
 import 'package:task_app/controllers/state_provider.dart';
 import 'package:task_app/controllers/title_state.dart';
 
@@ -14,7 +14,7 @@ class BranchAppBar extends AppBar {
 }
 
 class _BranchAppBarState extends State<BranchAppBar> {
-  late final AppBarState appBarState;
+  late final TaskFiltersState appBarState;
   late final TaskState taskState;
   late final TitleState titleState;
   late final Color themeColor;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/controllers/app_bar_state.dart';
+import '/controllers/task_filters_state.dart';
 import '/controllers/task_state.dart';
 import '/controllers/title_state.dart';
 
@@ -20,14 +20,14 @@ class StateProvider extends StatefulWidget {
 
 class StateDataProvider extends State<StateProvider> {
   late final TaskState taskState;
-  late final AppBarState appBarState;
+  late final TaskFiltersState appBarState;
   late final TitleState titleState;
 
   @override
   void initState() {
     super.initState();
 
-    appBarState = AppBarState();
+    appBarState = TaskFiltersState();
     taskState = TaskState(appBarState: appBarState);
     titleState = TitleState();
   }

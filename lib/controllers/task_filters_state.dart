@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class AppBarState extends ChangeNotifier {
+class TaskFiltersState extends ChangeNotifier {
   bool _showOnlyCompleted = false;
   bool _showOnlyFavorite = false;
 
