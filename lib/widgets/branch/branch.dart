@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:task_app/widgets/branch/app_bar.dart';
 import '/controllers/state_provider.dart';
 import '../branch/branch_body.dart';
+import 'dialog/create_task.dart';
 
 class BranchScreen extends StatefulWidget {
   const BranchScreen({super.key});
@@ -12,84 +12,28 @@ class BranchScreen extends StatefulWidget {
 }
 
 class _BranchScreenState extends State<BranchScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _textEditingController = TextEditingController();
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BranchAppBar(),
       body: const BranchBody(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _onAddTaskButtonPressed(context),
+        onPressed: _onPressed,
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _onAddTaskButtonPressed(BuildContext context) {
-    final stateProvider = StateProvider.of(context);
-    final taskState = stateProvider.taskState;
+  void _onPressed() async {
+    final taskState = StateProvider.of(context).taskState;
 
-    showDialog(
+    final String? res = await showDialog(
       context: context,
-      builder: (context) {
-        final dialog = AlertDialog(
-          title: const Text('Создать задачу'),
-          content: Form(
-            key: _formKey,
-            child: TextFormField(
-              controller: _textEditingController,
-              decoration: const InputDecoration(hintText: 'Введите название задачи'),
-              validator: _validator,
-              maxLength: 40,
-              maxLengthEnforcement: MaxLengthEnforcement.none,
-            ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceAround,
-          actions: [
-            _createCancelButton(context),
-            TextButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  taskState.addTask(_textEditingController.text);
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Создать!'),
-            )
-          ],
-        );
-
-        return dialog;
-      },
+      builder: (context) => const TaskCreationDialog(),
     );
-  }
 
-  String? _validator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Название не может быть пустым';
+    if (res != null) {
+      taskState.addTask(res);
     }
-
-    if (value.length > 40) {
-      return 'Слишком длинное название';
-    }
-
-    return null;
-  }
-
-  Widget _createCancelButton(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      child: const Text("Отмена"),
-    );
   }
 }
