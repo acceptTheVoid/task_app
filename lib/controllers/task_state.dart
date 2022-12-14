@@ -10,7 +10,7 @@ class TaskState extends ChangeNotifier {
   final TaskFiltersState appBarState;
 
   final List<Task> _tasks = [];
-  List<Task> _viewedTasks = [];
+  List<Task> _tasksThatWillBeViewedInClosestTime = [];
 
   TaskState({required this.appBarState}) {
     addTask('Илья Обухов');
@@ -25,7 +25,7 @@ class TaskState extends ChangeNotifier {
     super.dispose();
   }
 
-  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_viewedTasks);
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasksThatWillBeViewedInClosestTime);
 
   void _filterTasks() {
     final List<Task> viewedList = [];
@@ -36,7 +36,7 @@ class TaskState extends ChangeNotifier {
       }
     }
 
-    _viewedTasks = viewedList;
+    _tasksThatWillBeViewedInClosestTime = viewedList;
     notifyListeners();
   }
 
