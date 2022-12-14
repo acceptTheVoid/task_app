@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/controllers/task_state.dart';
+import 'package:task_app/resource_paths.dart';
 
 class BranchBody extends StatefulWidget {
   const BranchBody({super.key});
@@ -29,8 +30,8 @@ class _BranchBodyState extends State<BranchBody> {
         children: [
           Stack(
             children: [
-              SvgPicture.asset('assets/todolist_background.svg'),
-              SvgPicture.asset('assets/todolist.svg'),
+              SvgPicture.asset(ResourcePaths.todoListBackground),
+              SvgPicture.asset(ResourcePaths.todoList),
             ],
           ),
           const Text(
