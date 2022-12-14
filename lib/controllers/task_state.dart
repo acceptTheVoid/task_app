@@ -1,42 +1,45 @@
 import 'dart:collection';
-import 'package:flutter/cupertino.dart';
-import 'package:task_app/controllers/task_filters_state.dart';
+import 'package:flutter/material.dart';
 
 import '../models/task.dart';
 
 class TaskState extends ChangeNotifier {
   int _taskCounter = 0;
 
-  final TaskFiltersState appBarState;
+  bool _showOnlyCompleted = false;
+  bool _showOnlyFavorite = false;
+
+  bool get showOnlyCompleted => _showOnlyCompleted;
+  bool get showOnlyFavorite => _showOnlyFavorite;
 
   final List<Task> _tasks = [];
-  List<Task> _tasksThatWillBeViewedInClosestTime = [];
+  List<Task> _filteredTasks = [];
 
-  TaskState({required this.appBarState}) {
+  TaskState() {
     addTask('Илья Обухов');
     addTask('Флаттер для...');
     addTask('Таска');
-    appBarState.addListener(_filterTasks);
   }
 
-  @override
-  void dispose() {
-    appBarState.removeListener(_filterTasks);
-    super.dispose();
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_filteredTasks);
+
+  void toggleOnlyCompleted() {
+    _showOnlyCompleted = !_showOnlyCompleted;
+    debugPrint('Show only completed: $_showOnlyCompleted');
+    _filterTasks();
   }
 
-  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasksThatWillBeViewedInClosestTime);
+  void toggleOnlyFavorite() {
+    _showOnlyFavorite = !_showOnlyFavorite;
+    _filterTasks();
+  }
 
   void _filterTasks() {
-    final List<Task> viewedList = [];
-    for (int i = 0; i != _tasks.length; ++i) {
-      if (!(appBarState.showOnlyCompleted && _tasks[i].isChecked ||
-          appBarState.showOnlyFavorite && !_tasks[i].isFavorite)) {
-        viewedList.add(_tasks[i]);
-      }
-    }
+    _filteredTasks = [..._tasks];
 
-    _tasksThatWillBeViewedInClosestTime = viewedList;
+    if (_showOnlyFavorite) _filteredTasks.removeWhere((task) => !task.isFavorite);
+    if (_showOnlyCompleted) _filteredTasks.removeWhere((task) => task.isCompleted);
+
     notifyListeners();
   }
 
@@ -45,25 +48,25 @@ class TaskState extends ChangeNotifier {
     _filterTasks();
   }
 
-  void changeCheckAt(int idx) {
-    final task = _tasks.lastWhere((task) => task.id == idx);
-    task.isChecked = !task.isChecked;
+  void changeCheckWithId(int id) {
+    final task = _tasks.firstWhere((task) => task.id == id);
+    task.isCompleted = !task.isCompleted;
     _filterTasks();
   }
 
-  void changeFavAt(int idx) {
-    final task = _tasks.lastWhere((task) => task.id == idx);
+  void changeFavWithId(int id) {
+    final task = _tasks.firstWhere((task) => task.id == id);
     task.isFavorite = !task.isFavorite;
     _filterTasks();
   }
 
-  void removeTaskAt(int idx) {
-    _tasks.removeWhere((task) => task.id == idx);
+  void removeTaskWithId(int id) {
+    _tasks.removeWhere((task) => task.id == id);
     _filterTasks();
   }
 
   void removeAllChecked() {
-    _tasks.removeWhere((task) => task.isChecked);
+    _tasks.removeWhere((task) => task.isCompleted);
     _filterTasks();
   }
 }

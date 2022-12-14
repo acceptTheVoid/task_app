@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({super.key, required this.text});
+  const CancelButton({super.key, this.text = 'Отмена'});
 
   final String text;
 
