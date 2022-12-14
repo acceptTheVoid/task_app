@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/controllers/task_state.dart';
-import 'package:task_app/resource_paths.dart';
+import 'package:task_app/assets_paths.dart';
 
 class BranchBody extends StatefulWidget {
   const BranchBody({super.key});
@@ -30,8 +30,8 @@ class _BranchBodyState extends State<BranchBody> {
         children: [
           Stack(
             children: [
-              SvgPicture.asset(ResourcePaths.todoListBackground),
-              SvgPicture.asset(ResourcePaths.todoList),
+              SvgPicture.asset(AssetsPaths.todoListBackground),
+              SvgPicture.asset(AssetsPaths.todoList),
             ],
           ),
           const Text(
@@ -81,15 +81,16 @@ class _BranchBodyState extends State<BranchBody> {
           key: ValueKey<int>(task.id),
           direction: DismissDirection.endToStart,
           background: ClipRRect(
-            borderRadius: BorderRadius.circular(25),
-            child: const Card(
-              child: ListTile(
-                contentPadding: EdgeInsets.only(top: 5),
-                trailing: Icon(
+            borderRadius: BorderRadius.circular(3),
+            child: Container(
+              padding: const EdgeInsets.only(top: 5),
+              color: Colors.red,
+              child: const Align(
+                alignment: Alignment.centerRight,
+                child: Icon(
                   Icons.delete,
                   color: Colors.white,
                 ),
-                tileColor: Colors.red,
               ),
             ),
           ),
