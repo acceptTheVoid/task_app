@@ -19,42 +19,50 @@ class _BranchAppBarState extends State<BranchAppBar> {
     final titleState = context.watch<TitleState>();
     final taskState = context.watch<TaskState>();
 
-    Icon checkIcon, favouriteIcon;
-    String checkTitle, favouriteTitle;
+    late PopupMenuItem showOnlyCompleted;
     if (taskState.showOnlyCompleted) {
-      checkIcon = const Icon(Icons.check_circle_outline);
-      checkTitle = 'Показать выполненные';
+      showOnlyCompleted = _createMenuItem(
+        icon: const Icon(Icons.check_circle_outline),
+        title: 'Показать выполненные',
+        onTap: taskState.toggleOnlyCompleted,
+      );
     } else {
-      checkIcon = const Icon(Icons.check_circle);
-      checkTitle = 'Скрыть выполненные';
+      showOnlyCompleted = _createMenuItem(
+        icon: const Icon(Icons.check_circle),
+        title: 'Скрыть выполненные',
+        onTap: taskState.toggleOnlyCompleted,
+      );
     }
 
+    late PopupMenuItem showOnlyFavorite;
     if (taskState.showOnlyFavorite) {
-      favouriteIcon = const Icon(Icons.star_border);
-      favouriteTitle = 'Показать все';
+      showOnlyFavorite = _createMenuItem(
+        icon: const Icon(Icons.star_border),
+        title: 'Показать все',
+        onTap: taskState.toggleOnlyFavorite,
+      );
     } else {
-      favouriteIcon = const Icon(Icons.star);
-      favouriteTitle = 'Только избранные';
+      showOnlyFavorite = showOnlyFavorite = _createMenuItem(
+        icon: const Icon(Icons.star),
+        title: 'Показать избранные',
+        onTap: taskState.toggleOnlyFavorite,
+      );
     }
 
     final options = [
-      _createMenuItem(checkTitle, () => taskState.toggleOnlyCompleted(), checkIcon),
-      _createMenuItem(favouriteTitle, () => setState(() => taskState.toggleOnlyFavorite()), favouriteIcon),
-      _createMenuItem('Сортировать', null, const Icon(Icons.sort)),
+      showOnlyCompleted,
+      showOnlyFavorite,
+      _createMenuItem(title: 'Сортировать', icon: const Icon(Icons.sort)),
       _createMenuItem(
-        'Удалить выполненные',
-        // Костыль с Future.delayed нужен потому что внутри PopupMenuItem (который эта функция и возвращает)
-        // Вызывается Navigator.pop и сразу же удаляет диалоговое окно
-        () => Future.delayed(Duration.zero, _showDeleteDialogue),
-        const Icon(Icons.delete_outline),
+        title: 'Удалить выполненные',
+        icon: const Icon(Icons.delete_outline),
+        onTap: () => _wrapShowDialog(_showDeleteDialogue),
       ),
-      _createMenuItem('Выбрать тему', null, const Icon(Icons.style_outlined)),
+      _createMenuItem(title: 'Выбрать тему', icon: const Icon(Icons.style_outlined)),
       _createMenuItem(
-        'Редактировать ветку',
-        // Костыль с Future.delayed нужен потому что внутри PopupMenuItem (который эта функция и возвращает)
-        // Вызывается Navigator.pop и сразу же удаляет диалоговое окно
-        () => Future.delayed(Duration.zero, _onPressed),
-        const Icon(Icons.mode_edit_outlined),
+        title: 'Редактировать ветку',
+        icon: const Icon(Icons.mode_edit_outlined),
+        onTap: () => _wrapShowDialog(_setNewTitle),
       ),
     ];
 
@@ -64,7 +72,17 @@ class _BranchAppBarState extends State<BranchAppBar> {
     );
   }
 
-  void _onPressed() async {
+  PopupMenuItem _createMenuItem({required String title, void Function()? onTap, required Icon icon}) {
+    return PopupMenuItem(
+      onTap: onTap,
+      child: ListTile(
+        leading: icon,
+        title: Text(title),
+      ),
+    );
+  }
+
+  void _setNewTitle() async {
     final titleState = Provider.of<TitleState>(context, listen: false);
 
     final String? newTitle = await showDialog(
@@ -79,14 +97,10 @@ class _BranchAppBarState extends State<BranchAppBar> {
     }
   }
 
-  PopupMenuItem _createMenuItem(String title, void Function()? onTap, Icon icon) {
-    return PopupMenuItem(
-      onTap: onTap,
-      child: ListTile(
-        leading: icon,
-        title: Text(title),
-      ),
-    );
+  void _wrapShowDialog(void Function() callback) async {
+    // Костыль с Future.delayed нужен потому что внутри PopupMenuItem (который эта функция и возвращает)
+    // Вызывается Navigator.pop и сразу же удаляет диалоговое окно
+    return Future.delayed(Duration.zero, callback);
   }
 
   Future<void> _showDeleteDialogue() {
