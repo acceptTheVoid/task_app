@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/controllers/task_state.dart';
 import 'package:task_app/assets_paths.dart';
+import 'package:task_app/widgets/branch/list_item.dart';
 
 class BranchBody extends StatefulWidget {
   const BranchBody({super.key});
@@ -16,11 +17,7 @@ class _BranchBodyState extends State<BranchBody> {
   Widget build(BuildContext context) {
     final taskState = context.watch<TaskState>();
 
-    return taskState.tasks.isEmpty
-        ? _createEmptyBody()
-        : Consumer<TaskState>(
-            builder: (context, taskState, _) => _createList(taskState),
-          );
+    return taskState.tasks.isEmpty ? _createEmptyBody() : _createList(taskState);
   }
 
   Widget _createEmptyBody() {
@@ -44,60 +41,17 @@ class _BranchBodyState extends State<BranchBody> {
   }
 
   Widget _createList(TaskState taskState) {
-    final viewedList = taskState.tasks;
+    final list = taskState.tasks;
 
-    final themeColor = Theme.of(context).primaryColor;
+    return Consumer<TaskState>(builder: (context, taskState, _) {
+      return ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          final task = list[index];
 
-    return ListView.builder(
-      itemCount: viewedList.length,
-      itemBuilder: (context, index) {
-        var task = viewedList[index];
-
-        var listItem = ClipRRect(
-          borderRadius: BorderRadius.circular(25),
-          child: Card(
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 5),
-              leading: Transform.scale(
-                scale: 1.2,
-                child: Checkbox(
-                  shape: const CircleBorder(),
-                  onChanged: (_) => taskState.changeCheckWithId(task.id),
-                  activeColor: themeColor,
-                  value: task.isCompleted,
-                ),
-              ),
-              title: Text(task.title),
-              trailing: IconButton(
-                onPressed: () => taskState.changeFavWithId(task.id),
-                icon: Transform.scale(scale: 1.5, child: Icon(task.isFavorite ? Icons.star_sharp : Icons.star_outline)),
-                color: (task.isFavorite ? Colors.amber : Colors.black54),
-              ),
-            ),
-          ),
-        );
-
-        return Dismissible(
-          key: ValueKey<int>(task.id),
-          direction: DismissDirection.endToStart,
-          background: ClipRRect(
-            borderRadius: BorderRadius.circular(3),
-            child: Container(
-              padding: const EdgeInsets.only(top: 5),
-              color: Colors.red,
-              child: const Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          onDismissed: (direction) => taskState.removeTaskWithId(task.id),
-          child: listItem,
-        );
-      },
-    );
+          return ListItem(task: task);
+        },
+      );
+    });
   }
 }
