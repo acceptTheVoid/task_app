@@ -12,12 +12,14 @@ class RedactBranchDialog extends StatefulWidget {
 }
 
 class _RedactBranchDialogState extends State<RedactBranchDialog> {
-  final _formKey = GlobalKey<FormState>();
-  final _textController = TextEditingController();
+  late final GlobalKey<FormState> _formKey;
+  late final TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
+    _formKey = GlobalKey<FormState>();
+    _textController = TextEditingController();
     _textController.text = widget.currentTitle;
   }
 

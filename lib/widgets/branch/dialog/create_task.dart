@@ -11,25 +11,20 @@ class TaskCreationDialog extends StatefulWidget {
 }
 
 class _TaskCreationDialogState extends State<TaskCreationDialog> {
-  final _formKey = GlobalKey<FormState>();
-  final _textEditingController = TextEditingController();
+  late final GlobalKey<FormState> _formKey;
+  late final TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _textEditingController = TextEditingController();
+  }
 
   @override
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
-  }
-
-  String? _validator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Название не может быть пустым';
-    }
-
-    if (value.length > 40) {
-      return 'Слишком длинное название';
-    }
-
-    return null;
   }
 
   @override
@@ -59,5 +54,17 @@ class _TaskCreationDialogState extends State<TaskCreationDialog> {
         )
       ],
     );
+  }
+
+  String? _validator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Название не может быть пустым';
+    }
+
+    if (value.length > 40) {
+      return 'Слишком длинное название';
+    }
+
+    return null;
   }
 }

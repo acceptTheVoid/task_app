@@ -54,7 +54,7 @@ class _BranchAppBarState extends State<BranchAppBar> {
   }
 
   PopupMenuItem _buildToggleOnlyCompleted() {
-    final taskState = Provider.of<TaskState>(context, listen: false);
+    final taskState = context.read<TaskState>();
 
     if (taskState.showOnlyCompleted) {
       return _createMenuItem(
