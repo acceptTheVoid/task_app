@@ -35,10 +35,14 @@ class TaskState extends ChangeNotifier {
   }
 
   void _filterTasks() {
-    _filteredTasks = [..._tasks];
-
-    if (_showOnlyFavorite) _filteredTasks.removeWhere((task) => !task.isFavorite);
-    if (_showOnlyCompleted) _filteredTasks.removeWhere((task) => task.isCompleted);
+    Iterable<Task> shownTasksIterable = _tasks;
+    if (_showOnlyFavorite) {
+      shownTasksIterable = shownTasksIterable.where((task) => task.isFavorite);
+    }
+    if (_showOnlyCompleted) {
+      shownTasksIterable = shownTasksIterable.where((task) => !task.isCompleted);
+    }
+    _filteredTasks = shownTasksIterable.toList();
 
     notifyListeners();
   }
