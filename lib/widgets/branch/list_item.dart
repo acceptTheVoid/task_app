@@ -38,7 +38,7 @@ class ListItem extends StatelessWidget {
     );
 
     return Dismissible(
-      key: ValueKey<int>(task.id),
+      key: ValueKey<String>(task.id),
       direction: DismissDirection.endToStart,
       background: ClipRRect(
         borderRadius: BorderRadius.circular(3),

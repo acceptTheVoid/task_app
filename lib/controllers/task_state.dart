@@ -1,13 +1,14 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/task.dart';
 
 class TaskState extends ChangeNotifier {
-  int _taskCounter = 0;
-
   bool _showOnlyCompleted = false;
   bool _showOnlyFavorite = false;
+
+  final Uuid _uuidGenerator = const Uuid();
 
   bool get showOnlyCompleted => _showOnlyCompleted;
   bool get showOnlyFavorite => _showOnlyFavorite;
@@ -39,32 +40,36 @@ class TaskState extends ChangeNotifier {
     if (_showOnlyFavorite) {
       shownTasksIterable = shownTasksIterable.where((task) => task.isFavorite);
     }
+
     if (_showOnlyCompleted) {
       shownTasksIterable = shownTasksIterable.where((task) => !task.isCompleted);
     }
+
     _filteredTasks = shownTasksIterable.toList();
 
     notifyListeners();
   }
 
   void addTask(String title) {
-    _tasks.add(Task(id: _taskCounter++, title: title));
+    _tasks.add(Task(id: _uuidGenerator.v4(), title: title));
     _filterTasks();
   }
 
-  void changeCheckWithId(int id) {
-    final task = _tasks.firstWhere((task) => task.id == id);
-    task.isCompleted = !task.isCompleted;
+  void changeCheckWithId(String id) {
+    final idx = _tasks.indexWhere((task) => task.id == id);
+    final task = _tasks[idx];
+    _tasks[idx] = task.copyWith(isCompleted: !task.isCompleted);
     _filterTasks();
   }
 
-  void changeFavWithId(int id) {
-    final task = _tasks.firstWhere((task) => task.id == id);
-    task.isFavorite = !task.isFavorite;
+  void changeFavWithId(String id) {
+    final idx = _tasks.indexWhere((task) => task.id == id);
+    final task = _tasks[idx];
+    _tasks[idx] = task.copyWith(isFavorite: !task.isFavorite);
     _filterTasks();
   }
 
-  void removeTaskWithId(int id) {
+  void removeTaskWithId(String id) {
     _tasks.removeWhere((task) => task.id == id);
     _filterTasks();
   }

@@ -4,7 +4,7 @@ import 'package:task_app/controllers/title_state.dart';
 import 'package:task_app/widgets/branch/dialog/cancel_button.dart';
 import 'package:task_app/widgets/branch/dialog/redact_branch.dart';
 
-import '../../controllers/task_state.dart';
+import '/controllers/task_state.dart';
 
 class BranchAppBar extends AppBar {
   BranchAppBar({super.key});

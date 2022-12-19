@@ -1,7 +1,14 @@
-class Task {
-  final int id;
-  final String title;
-  bool isCompleted = false;
-  bool isFavorite = false;
-  Task({required this.id, required this.title});
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
+part 'task.freezed.dart';
+
+@freezed
+class Task with _$Task {
+  const factory Task({
+    required String id,
+    required String title,
+    @Default(false) bool isCompleted,
+    @Default(false) bool isFavorite,
+  }) = _Task;
 }
