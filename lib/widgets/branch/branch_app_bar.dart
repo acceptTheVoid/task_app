@@ -17,58 +17,29 @@ class _BranchAppBarState extends State<BranchAppBar> {
   @override
   Widget build(BuildContext context) {
     final titleState = context.watch<TitleState>();
-    final taskState = context.watch<TaskState>();
-
-    late PopupMenuItem showOnlyCompleted;
-    if (taskState.showOnlyCompleted) {
-      showOnlyCompleted = _createMenuItem(
-        icon: const Icon(Icons.check_circle_outline),
-        title: 'Показать выполненные',
-        onTap: taskState.toggleOnlyCompleted,
-      );
-    } else {
-      showOnlyCompleted = _createMenuItem(
-        icon: const Icon(Icons.check_circle),
-        title: 'Скрыть выполненные',
-        onTap: taskState.toggleOnlyCompleted,
-      );
-    }
-
-    late PopupMenuItem showOnlyFavorite;
-    if (taskState.showOnlyFavorite) {
-      showOnlyFavorite = _createMenuItem(
-        icon: const Icon(Icons.star_border),
-        title: 'Показать все',
-        onTap: taskState.toggleOnlyFavorite,
-      );
-    } else {
-      showOnlyFavorite = showOnlyFavorite = _createMenuItem(
-        icon: const Icon(Icons.star),
-        title: 'Показать избранные',
-        onTap: taskState.toggleOnlyFavorite,
-      );
-    }
-
-    final options = [
-      showOnlyCompleted,
-      showOnlyFavorite,
-      _createMenuItem(title: 'Сортировать', icon: const Icon(Icons.sort)),
-      _createMenuItem(
-        title: 'Удалить выполненные',
-        icon: const Icon(Icons.delete_outline),
-        onTap: () => _wrapShowDialog(_showDeleteDialogue),
-      ),
-      _createMenuItem(title: 'Выбрать тему', icon: const Icon(Icons.style_outlined)),
-      _createMenuItem(
-        title: 'Редактировать ветку',
-        icon: const Icon(Icons.mode_edit_outlined),
-        onTap: () => _wrapShowDialog(_setNewTitle),
-      ),
-    ];
 
     return AppBar(
       title: Text(titleState.title),
-      actions: [PopupMenuButton(itemBuilder: (_) => options)],
+      actions: [
+        PopupMenuButton(
+          itemBuilder: (_) => [
+            _buildToggleOnlyCompleted(),
+            _buildToggleOnlyFavorite(),
+            _createMenuItem(title: 'Сортировать', icon: const Icon(Icons.sort)),
+            _createMenuItem(
+              title: 'Удалить выполненные',
+              icon: const Icon(Icons.delete_outline),
+              onTap: () => _wrapShowDialog(_showDeleteDialogue),
+            ),
+            _createMenuItem(title: 'Выбрать тему', icon: const Icon(Icons.style_outlined)),
+            _createMenuItem(
+              title: 'Редактировать ветку',
+              icon: const Icon(Icons.mode_edit_outlined),
+              onTap: () => _wrapShowDialog(_setNewTitle),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -82,8 +53,44 @@ class _BranchAppBarState extends State<BranchAppBar> {
     );
   }
 
+  PopupMenuItem _buildToggleOnlyCompleted() {
+    final taskState = Provider.of<TaskState>(context, listen: false);
+
+    if (taskState.showOnlyCompleted) {
+      return _createMenuItem(
+        icon: const Icon(Icons.check_circle_outline),
+        title: 'Показать выполненные',
+        onTap: taskState.toggleOnlyCompleted,
+      );
+    } else {
+      return _createMenuItem(
+        icon: const Icon(Icons.check_circle),
+        title: 'Скрыть выполненные',
+        onTap: taskState.toggleOnlyCompleted,
+      );
+    }
+  }
+
+  PopupMenuItem _buildToggleOnlyFavorite() {
+    final taskState = Provider.of<TaskState>(context, listen: false);
+
+    if (taskState.showOnlyFavorite) {
+      return _createMenuItem(
+        icon: const Icon(Icons.star_border),
+        title: 'Показать все',
+        onTap: taskState.toggleOnlyFavorite,
+      );
+    } else {
+      return _createMenuItem(
+        icon: const Icon(Icons.star),
+        title: 'Показать избранные',
+        onTap: taskState.toggleOnlyFavorite,
+      );
+    }
+  }
+
   void _setNewTitle() async {
-    final titleState = Provider.of<TitleState>(context, listen: false);
+    final titleState = context.read<TitleState>();
 
     final String? newTitle = await showDialog(
       context: context,
