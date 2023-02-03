@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:task_app/models/task_step.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/task.dart';
@@ -26,7 +27,6 @@ class TaskState extends ChangeNotifier {
 
   void toggleOnlyCompleted() {
     _showOnlyCompleted = !_showOnlyCompleted;
-    debugPrint('Show only completed: $_showOnlyCompleted');
     _filterTasks();
   }
 
@@ -51,8 +51,44 @@ class TaskState extends ChangeNotifier {
   }
 
   void addTask(String title) {
-    _tasks.add(Task(id: _uuidGenerator.v4(), title: title));
+    _tasks.add(Task(
+      id: _uuidGenerator.v4(),
+      title: title,
+      timeOfCreation: DateTime.now(),
+    ));
+
     _filterTasks();
+  }
+
+  Task getById(String id) {
+    return _tasks.firstWhere((task) => task.id == id);
+  }
+
+  int _getListId(String id) {
+    return _tasks.indexWhere((task) => task.id == id);
+  }
+
+  void addStepById(String id) {
+    final idx = _tasks.indexWhere((task) => task.id == id);
+    final task = _tasks[idx];
+    final steps = task.taskSteps.toList();
+    final step = TaskStep(id: _uuidGenerator.v4(), description: '');
+    steps.add(step);
+
+    _tasks[idx] = task.copyWith(taskSteps: steps);
+    notifyListeners();
+  }
+
+  void changeCheckInStep(String taskId, String stepId) {
+    final taskIdx = _getListId(taskId);
+    final task = _tasks[taskIdx];
+
+    final stepIdx = task.taskSteps.indexWhere((step) => step.id == stepId);
+    final step = task.taskSteps[stepIdx];
+
+    task.taskSteps[stepIdx] = step.copyWith(isCompleted: !step.isCompleted);
+
+    notifyListeners();
   }
 
   void changeCheckWithId(String id) {
@@ -77,5 +113,10 @@ class TaskState extends ChangeNotifier {
   void removeAllChecked() {
     _tasks.removeWhere((task) => task.isCompleted);
     _filterTasks();
+  }
+
+  void _changeStep(String taskId, String stepId) {
+    final taskIdx = _tasks.indexWhere((element) => element.id == taskId);
+    final task = _tasks[taskIdx];
   }
 }

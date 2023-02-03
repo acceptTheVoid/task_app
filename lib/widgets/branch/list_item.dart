@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:task_app/controllers/task_state.dart';
 import 'package:task_app/models/task.dart';
 
+import 'package:task_app/widgets/branch/task_screen/task_screen.dart';
+
 class ListItem extends StatelessWidget {
   const ListItem({super.key, required this.task});
 
@@ -33,6 +35,16 @@ class ListItem extends StatelessWidget {
             icon: Transform.scale(scale: 1.5, child: Icon(task.isFavorite ? Icons.star_sharp : Icons.star_outline)),
             color: (task.isFavorite ? Colors.amber : Colors.black54),
           ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ListenableProvider<TaskState>.value(
+                  value: taskState,
+                  child: TaskScreen(id: task.id),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
